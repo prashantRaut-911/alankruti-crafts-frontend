@@ -1,20 +1,15 @@
 import api from "./api";
 
-export const customerService = {
+export const getCustomers = async (
+  params = {}
+) => {
+  const response = await api.get(
+    "/customers",
+    {
+      params,
+    }
+  );
 
-  async getCustomers(
-    params = {}
-  ) {
-
-    const response =
-      await api.get(
-        "/customers",
-        {
-          params
-        }
-      );
-
-    return response.data;
-  }
-
+  return response.data;
 };
+

@@ -1,5 +1,6 @@
 import {
   Navigate,
+  Outlet,
   Route,
   Routes,
 } from "react-router-dom";
@@ -16,6 +17,16 @@ import OrderHistory from "./pages/OrderHistory";
 import CustomerProfile from "./pages/CustomerProfile";
 import CustomerSupport from "./pages/CustomerSupport";
 
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProductManagement from "./pages/admin/ProductManagement";
+import AddProduct from "./pages/admin/AddProduct";
+import EditProduct from "./pages/admin/EditProduct";
+import OrderManagement from "./pages/admin/OrderManagement";
+import CustomerManagement from "./pages/admin/CustomerManagement";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function StoreLayout({ children }) {
   return (
     <div className="app-shell">
@@ -27,6 +38,14 @@ function StoreLayout({ children }) {
 
       <Footer />
     </div>
+  );
+}
+
+function AdminLayout() {
+  return (
+    <ProtectedRoute>
+      <Outlet />
+    </ProtectedRoute>
   );
 }
 
@@ -111,18 +130,17 @@ export default function App() {
       />
 
       {/* =========================
-          ADMIN PANEL
-          
-          Temporarily disabled.
-          We will enable these routes
-          after the Admin Panel is built.
+          ADMIN LOGIN
       ========================== */}
 
-      {/* 
       <Route
         path="/admin/login"
         element={<AdminLogin />}
       />
+
+      {/* =========================
+          PROTECTED ADMIN ROUTES
+      ========================== */}
 
       <Route
         path="/admin"
@@ -131,39 +149,45 @@ export default function App() {
         <Route
           index
           element={
-            <Navigate
-              to="/admin/products"
-              replace
-            />
+            <AdminDashboard />
           }
         />
 
         <Route
           path="products"
-          element={<ProductManagement />}
+          element={
+            <ProductManagement />
+          }
         />
 
         <Route
           path="products/new"
-          element={<AddProduct />}
+          element={
+            <AddProduct />
+          }
         />
 
         <Route
           path="products/:id/edit"
-          element={<EditProduct />}
+          element={
+            <EditProduct />
+          }
         />
 
         <Route
           path="orders"
-          element={<OrderManagement />}
+          element={
+            <OrderManagement />
+          }
         />
 
         <Route
           path="customers"
-          element={<CustomerManagement />}
+          element={
+            <CustomerManagement />
+          }
         />
       </Route>
-      */}
 
       {/* =========================
           FALLBACK
@@ -182,4 +206,3 @@ export default function App() {
     </Routes>
   );
 }
-
