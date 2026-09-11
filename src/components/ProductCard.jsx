@@ -9,25 +9,31 @@ const ProductCard = ({ product }) => {
   }
 
   const image =
+    product.image ||
     product.images?.[0] ||
-    "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=900&q=80";
+    "";
 
   return (
     <article className="product-card">
-
       {/* Product Image */}
       <Link
         to={`/products/${product._id}`}
         className="product-image-wrapper"
       >
-        <img
-          src={image}
-          alt={product.name}
-          className="product-image"
-          loading="lazy"
-        />
+        {image ? (
+          <img
+            src={image}
+            alt={product.name}
+            className="product-image"
+            loading="lazy"
+          />
+        ) : (
+          <div className="product-image-placeholder">
+            <span>No image available</span>
+          </div>
+        )}
 
-        {product.isFeatured && (
+        {product.featured && (
           <span className="product-badge">
             Featured
           </span>
@@ -42,13 +48,11 @@ const ProductCard = ({ product }) => {
 
       {/* Product Info */}
       <div className="product-card-content">
-
         <div className="product-category">
           {product.category || "Handcrafted"}
         </div>
 
         <div className="product-card-title-row">
-
           <div>
             <Link
               to={`/products/${product._id}`}

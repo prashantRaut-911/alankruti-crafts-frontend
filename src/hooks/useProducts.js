@@ -7,6 +7,7 @@ import {
 
 export const useProducts = (params = {}) => {
   const [products, setProducts] = useState([]);
+
   const [pagination, setPagination] = useState({
     page: 1,
     pages: 1,
@@ -23,18 +24,16 @@ export const useProducts = (params = {}) => {
 
       const response = await getProducts(params);
 
-      setProducts(response.data?.products || []);
+      setProducts(response.products || []);
 
-      setPagination(
-        response.data?.pagination || {
-          page: 1,
-          pages: 1,
-          total: 0,
-        }
-      );
+      setPagination({
+        page: response.pagination?.currentPage || 1,
+        pages: response.pagination?.totalPages || 1,
+        total: response.pagination?.totalProducts || 0,
+      });
     } catch (err) {
       setError(
-        err.response?.data?.message ||
+        err?.response?.data?.message ||
           "Unable to load products."
       );
     } finally {
@@ -72,10 +71,10 @@ export const useProduct = (id) => {
 
       const response = await getProduct(id);
 
-      setProduct(response.data?.product || null);
+      setProduct(response.product || null);
     } catch (err) {
       setError(
-        err.response?.data?.message ||
+        err?.response?.data?.message ||
           "Unable to load product."
       );
     } finally {
